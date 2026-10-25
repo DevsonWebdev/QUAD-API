@@ -1,6 +1,6 @@
 {
   "name": "QUAD",
-  "description": "Document creating and manipulation software",
+  "description": "qrcode, barcode creating and image  manipulation api",
   "author": {
     "name": "Bwambale Devson Kikoto"
   },
@@ -10,13 +10,10 @@
     "dev": "nodemon src/server.js"
   },
   "keywords": [
-    "Resume",
-    "Reports",
-    "Image scaling",
-    "QR code reader and creator "
+    "Image resizing",
+    "QRcode and barcode reader and creator "
   ],
   "dependencies": {
-    "@zxing/library": "^0.23.0",
     "bcrypt": "^6.0.0",
     "bwip-js": "^4.11.4",
     "compression": "^1.8.2",

@@ -16,6 +16,7 @@ app.get("/health", (req, res) => {
     message: "Server is running healthfy!!",
   });
 });
+
 // Not found route
 app.use(handleRouteNotFound)
 // Global error handler
