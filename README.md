@@ -157,7 +157,7 @@ curl -X POST http://localhost:3000/api/v1/qrcode/read \
 **Response**
 ```json
 {
-  "success": true,
+  "status:"Success",
   "data": "https://example.com"
 }
 ```
@@ -191,7 +191,7 @@ curl -X POST http://localhost:3000/api/v1/barcode/read \
 **Response**
 ```json
 {
-  "success": true,
+ "status":"Success"
   "type": "code128",
   "data": "123456789012"
 }
@@ -255,7 +255,7 @@ All errors follow a consistent format:
 
 ```json
 {
-  "success": false,
+  "status": "Failed",
   "error": {
     "code": 400,
     "message": "Invalid image format"
@@ -279,21 +279,20 @@ All errors follow a consistent format:
 ```
 quad-api/
 ├── src/
+│   ├── config/
+│   ├── database/
 │   ├── routes/
 │   │   ├── qrcode.routes.js
 │   │   ├── barcode.routes.js
 │   │   └── image.routes.js
 │   ├── controllers/
-│   ├── services/
+│   ├── utils/
 │   ├── middleware/
 │   └── app.js
 ├── .env.example
 ├── package.json
 └── README.md
 ```
-
-> Adjust to match your real folder layout.
-
 ---
 
 ## Contributions
