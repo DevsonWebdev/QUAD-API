@@ -1,7 +1,7 @@
 const {sendPng,sendSvg ,scanQrCode}=require("../utils/qrCode.utils")
+const catchAsync = require("../utils/catchAsync")
 
-async function createQrCode(req, res) {
-  try {
+const createQrCode=catchAsync(async function(req,res) {
     const { format } = req.query;
     const { text } = req.body;
 
@@ -17,15 +17,8 @@ async function createQrCode(req, res) {
     return sendPng(res, text, qrCodeFormat)
     }
      return sendSvg(res, text, qrCodeFormat);
-  }
-  catch (error) {
-    res.status(500).end();
-  }
-}
-
-async function readQrCode(req,res) {
-  try {
-
+})
+const readQrCode=catchAsync(async function(req,res) {
     if (!req.file) return res.status(400).json({
       status: "Failed",
       message: "Please provide requested image file"
@@ -38,13 +31,6 @@ async function readQrCode(req,res) {
       data: qrCodeData.data,
       qrcCodeText: qrCodeData.chunks[0].text
     });
-  }
-  catch (error) {
-    return res.status(400).json({
-      status: "Error",
-      message: "Could not read image"
-    })
-  }
-}
 
+} )
 module.exports={readQrCode,createQrCode}

@@ -1,10 +1,10 @@
 const { convertImg ,enhanceImage,resizeImage} = require("../utils/images.utils")
-
+const catchAsync=require("../utils/catchAsync")
 const supportedFormats = ["heic", "heif", "avif", "jpeg", " jpg", "jpe", "tile", "dz", "png", " raw", "tiff", "tif", "webp", "gif", "jp2", "jpx", " j2k", "j2c", " jxl "];
 const unrendered = ["avif", "tiff", "tif", "heif", "heic", "jxl", "bmp"]
 
-async function httpConvertImage(req, res) {
-  try {
+const httpConvertImage=catchAsync(async function (req, res) {
+
     const { file, query } = req;
     const { toFormat } = query;
     const { buffer, mimetype, originalname } = file;
@@ -24,18 +24,10 @@ async function httpConvertImage(req, res) {
     })
 
    return await  convertImg(res,buffer,toFormat.toLowerCase())
-  } catch (error) {
-    return  res.status(400).json({
-        status: "Failed",
-        message:`Image processing failed,${error.message}`
-      })
-  } finally {
-    req.file.buffer = null;
-  }
 }
+)
 
-async function httpEnhanceImage(req, res) {
-  try {
+const httpEnhanceImage=catchAsync(async function (req, res) {
     const { file } = req;
     const { mimetype, originalname,buffer } = file;
     const imgFormat = mimetype.split("/")[1];
@@ -45,18 +37,11 @@ async function httpEnhanceImage(req, res) {
       "Content-Disposition":`attachment; filename="${originalname.split(".")[0]}-quad.${imgFormat}"`
     })
      return await enhanceImage(res,buffer)
-  } catch (error) {
-    res.status(500).json({
-      status: "Failed",
-      message:`Image processing failed ${error.message}`
-})
-} finally {
-  req.file.buffer = null;
-}
-}
+  }
+)
 
-async function httpResizeImage(req,res) {
-  try {
+const httpResizeImage=catchAsync(async function (req,res) {
+
     const { file ,query} = req;
     const { width, height } = query;
     const { mimetype, originalname,buffer } = file;
@@ -78,15 +63,9 @@ async function httpResizeImage(req,res) {
       width: Number(width)
       , height: Number(height)
     })
-  } catch (error) {
-    res.status(500).json({
-      status: "Failed",
-      message:`Image processing failed ${error.message}`
+
 })
-  } finally {
-    req.file.buffer = null;
-}
-}
+
 module.exports = {
   httpConvertImage,
   httpEnhanceImage,

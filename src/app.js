@@ -7,7 +7,7 @@ const handleGlobalErrors = require("./middleware/globalErrorHandler")
 const handleRouteNotFound=require("./routes/notFound.route")
 
 app.use(express.json());
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: process.CORS_ORIGIN }));
 app.use("/api/v1", v1Api)
 
 app.get("/health", (req, res) => {

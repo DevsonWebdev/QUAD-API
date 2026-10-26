@@ -29,12 +29,12 @@ Generate and read QR codes and barcodes, convert images between formats, and res
 
 ### Available in v1
 
-| Module | Description |
-|---|---|
-| **QR Codes** | Create QR codes from text/URLs and read (decode) QR codes from images |
-| **Barcodes** | Create barcodes (e.g. Code128, EAN-13) and read barcodes from images |
-| **Image Conversion** | Convert images between formats (PNG, JPEG, WebP, etc.) |
-| **Image Resizing** | Resize images by width, height, or both, with fit options |
+| Module               | Description                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------------- |
+| **QR Codes**         | Create QR codes from text/URLs and read (decode) QR codes from images                     |
+| **Barcodes**         | Create barcodes (e.g. Code128, EAN-13) and read barcodes from images(Not available in v1) |
+| **Image Conversion** | Convert images between formats (PNG, JPEG, WebP, etc.)                                    |
+| **Image Resizing**   | Resize images by width, height, or both, with fit options                                 |
 
 ---
 
@@ -51,19 +51,19 @@ The following features are planned for **version 2** and are **not yet available
 
 ## Tech Stack
 
-| Area | Packages |
-|---|---|
-| Runtime / framework | Node.js, Express 5 |
-| Database | MongoDB via Mongoose |
-| QR codes | `qrcode` (create), `jsqr` (read) |
-| Barcodes | `bwip-js` (create), `@zxing/library` (read) |
-| Image processing | `sharp` |
-| File uploads | `multer` |
-| Security | `helmet`, `cors`, `express-rate-limit`, `express-mongo-sanitize` |
-| Utilities | `compression`, `morgan`, `dotenv`, `cookie-parser` |
-| Auth (v2) | `bcrypt`, `jsonwebtoken` |
-| Background jobs (v2) | Redis, BullMQ |
-| Dev | `nodemon` |
+| Area                 | Packages                                                         |
+| -------------------- | ---------------------------------------------------------------- |
+| Runtime / framework  | Node.js, Express 5                                               |
+| Database             | MongoDB via Mongoose                                             |
+| QR codes             | `qrcode` (create), `jsqr` (read)                                 |
+| Barcodes             | `bwip-js` (create), `@zxing/library` (read)                      |
+| Image processing     | `sharp`                                                          |
+| File uploads         | `multer`                                                         |
+| Security             | `helmet`, `cors`, `express-rate-limit`, `express-mongo-sanitize` |
+| Utilities            | `compression`, `morgan`, `dotenv`, `cookie-parser`               |
+| Auth (v2)            | `bcrypt`, `jsonwebtoken`                                         |
+| Background jobs (v2) | Redis, BullMQ                                                    |
+| Dev                  | `nodemon`                                                        |
 
 ---
 
@@ -129,13 +129,14 @@ REDIS_PORT=6379
 ### QR Codes
 
 #### Create a QR code
+
 `POST /api/v1/qrcode/create`
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `data` | string | yes | Text or URL to encode |
-| `format` | string | no | `png` (default), `svg` |
-| `size` | number | no | Output size in pixels |
+| Field    | Type   | Required | Description            |
+| -------- | ------ | -------- | ---------------------- |
+| `data`   | string | yes      | Text or URL to encode  |
+| `format` | string | no       | `png` (default), `svg` |
+| `size`   | number | no       | Output size in pixels  |
 
 ```bash
 curl -X POST http://localhost:3000/api/v1/qrcode/create \
@@ -145,6 +146,7 @@ curl -X POST http://localhost:3000/api/v1/qrcode/create \
 ```
 
 #### Read a QR code
+
 `POST /api/v1/qrcode/read`
 
 Send an image as `multipart/form-data` with the field name `image`.
@@ -155,6 +157,7 @@ curl -X POST http://localhost:3000/api/v1/qrcode/read \
 ```
 
 **Response**
+
 ```json
 {
   "status:"Success",
@@ -165,13 +168,14 @@ curl -X POST http://localhost:3000/api/v1/qrcode/read \
 ### Barcodes
 
 #### Create a barcode
+
 `POST /api/v1/barcode/create`
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `data` | string | yes | Value to encode |
-| `type` | string | no | `code128` (default), `ean13`, etc. |
-| `format` | string | no | `png` (default), `svg` |
+| Field    | Type   | Required | Description                        |
+| -------- | ------ | -------- | ---------------------------------- |
+| `data`   | string | yes      | Value to encode                    |
+| `type`   | string | no       | `code128` (default), `ean13`, etc. |
+| `format` | string | no       | `png` (default), `svg`             |
 
 ```bash
 curl -X POST http://localhost:3000/api/v1/barcode/create \
@@ -181,6 +185,7 @@ curl -X POST http://localhost:3000/api/v1/barcode/create \
 ```
 
 #### Read a barcode
+
 `POST /api/v1/barcode/read`
 
 ```bash
@@ -189,6 +194,7 @@ curl -X POST http://localhost:3000/api/v1/barcode/read \
 ```
 
 **Response**
+
 ```json
 {
  "status":"Success"
@@ -200,13 +206,14 @@ curl -X POST http://localhost:3000/api/v1/barcode/read \
 ### Image Conversion
 
 #### Convert an image
+
 `POST /api/v1/image/convert`
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `image` | file | yes | Image to convert |
-| `format` | string | yes | Target format: `png`, `jpeg`, `webp`, etc. |
-| `quality` | number | no | 1-100 (for lossy formats) |
+| Field     | Type   | Required | Description                                |
+| --------- | ------ | -------- | ------------------------------------------ |
+| `image`   | file   | yes      | Image to convert                           |
+| `format`  | string | yes      | Target format: `png`, `jpeg`, `webp`, etc. |
+| `quality` | number | no       | 1-100 (for lossy formats)                  |
 
 ```bash
 curl -X POST http://localhost:3000/api/v1/image/convert \
@@ -218,14 +225,15 @@ curl -X POST http://localhost:3000/api/v1/image/convert \
 ### Image Resizing
 
 #### Resize an image
+
 `POST /api/v1/image/resize`
 
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `image` | file | yes | Image to resize |
-| `width` | number | no* | Target width in pixels |
-| `height` | number | no* | Target height in pixels |
-| `fit` | string | no | `cover`, `contain`, `fill`, `inside`, `outside` |
+| Field    | Type   | Required | Description                                     |
+| -------- | ------ | -------- | ----------------------------------------------- |
+| `image`  | file   | yes      | Image to resize                                 |
+| `width`  | number | no*      | Target width in pixels                          |
+| `height` | number | no*      | Target height in pixels                         |
+| `fit`    | string | no       | `cover`, `contain`, `fill`, `inside`, `outside` |
 
 \*At least one of `width` or `height` is required.
 
@@ -263,14 +271,14 @@ All errors follow a consistent format:
 }
 ```
 
-| Code | Meaning |
-|---|---|
-| 400 | Bad request / missing or invalid parameters |
-| 413 | File too large |
-| 415 | Unsupported media type |
-| 422 | No QR code or barcode found in image |
-| 429 | Too many requests (rate limit exceeded) |
-| 500 | Internal server error |
+| Code | Meaning                                     |
+| ---- | ------------------------------------------- |
+| 400  | Bad request / missing or invalid parameters |
+| 413  | File too large                              |
+| 415  | Unsupported media type                      |
+| 422  | No QR code or barcode found in image        |
+| 429  | Too many requests (rate limit exceeded)     |
+| 500  | Internal server error                       |
 
 ---
 
@@ -279,8 +287,8 @@ All errors follow a consistent format:
 ```
 quad-api/
 ├── src/
-│   ├── config/
-│   ├── database/
+│   ├── config/config.js
+│   ├── database/mongodb.js
 │   ├── routes/
 │   │   ├── qrcode.routes.js
 │   │   ├── barcode.routes.js
@@ -293,6 +301,7 @@ quad-api/
 ├── package.json
 └── README.md
 ```
+
 ---
 
 ## Contributions
