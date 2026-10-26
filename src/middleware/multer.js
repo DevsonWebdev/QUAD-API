@@ -1,9 +1,10 @@
 const multer = require("multer");
-const {memoryStorage} = multer;
+const { memoryStorage } = multer;
+const mbSize= Number(process.MAX_FILE_SIZE_MB)||10
 const qrCodeUpload = multer({
   storage: memoryStorage(),
   limits: {
-    fileSize: Number(process.MAX_FILE_SIZE_MB) * 1024 * 1024,
+    fileSize: mbSize * 1024 * 1024,
     files:1
   }
 })

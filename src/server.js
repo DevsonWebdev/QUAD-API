@@ -33,3 +33,11 @@ process.on('unhandledRejection', (err) => {
     process.exit(1);
   });
 });
+
+// Handle SIGINT (Ctrl+C or Docker/Kubernetes stop signals)
+process.on('SIGINT', async () => {
+  console.info('SIGINT received. Shutting down gracefully...');
+  await mongoose.connection.close();
+  console.info('MongoDB connection closed.');
+  process.exit(0);
+})
