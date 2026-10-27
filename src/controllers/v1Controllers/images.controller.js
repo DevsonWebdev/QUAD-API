@@ -1,5 +1,5 @@
-const { convertImg ,enhanceImage,resizeImage} = require("../utils/images.utils")
-const catchAsync=require("../utils/catchAsync")
+const { convertImg ,enhanceImage,resizeImage} = require("../../utils/images.utils")
+const catchAsync=require("../../utils/catchAsync")
 const supportedFormats = ["heic", "heif", "avif", "jpeg", " jpg", "jpe", "tile", "dz", "png", " raw", "tiff", "tif", "webp", "gif", "jp2", "jpx", " j2k", "j2c", " jxl "];
 const unrendered = ["avif", "tiff", "tif", "heif", "heic", "jxl", "bmp"]
 

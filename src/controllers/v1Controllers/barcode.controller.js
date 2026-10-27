@@ -1,5 +1,5 @@
-const {sendPngBarCode,sendbarCodeSvg}=require("../utils/barcode.utils");
-const catchAsync = require("../utils/catchAsync");
+const {sendPngBarCode,sendbarCodeSvg}=require("../../utils/barcode.utils");
+const catchAsync = require("../../utils/catchAsync");
 
 
 const createbarCode = catchAsync(async function (req, res) {

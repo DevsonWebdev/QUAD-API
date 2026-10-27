@@ -1,11 +1,30 @@
 const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
+// MONGDB MEMORY SERVER LOCAL
+const connectLocalDB = async () => {
+  try {
+    // Spawns a temporary, high-performance in-memory MongoDB instance locally
+    const mongod = await MongoMemoryServer.create();
+    const uri = mongod.getUri();
 
+    await mongoose.connect(uri);
+    console.info(`Local Memory MongoDB Connected: ${uri}`);
+  } catch (error) {
+    console.error(`Error connecting to local DB: ${error.message}`);
+    process.exit(1);
+  }
+};
+// ATLAS
 const connectDB = async () => {
   try {
     // Mongoose strictQuery setting for future-proofing queries
     mongoose.set('strictQuery', true);
 
-    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+    const connectionURI = process.env.NODE_ENV === "development" ?
+      process.env.MONGO_LEGACY_URI
+      : process.env.MONGO_URI;
+
+    const conn = await mongoose.connect(connectionURI, {
       // Note: useNewUrlParser and useUnifiedTopology are deprecated in newer Mongoose versions
       // as they are now enabled by default, but keeping options clean is key.
     });
@@ -24,8 +43,8 @@ const connectDB = async () => {
   } catch (error) {
     console.error(`Error connecting to MongoDB: ${error.message}`);
     // Exit process with failure if initial connection fails
-    process.exit(1);
+  process.env.NODE_ENV === "development"?null: process.exit(1);
   }
 };
 
-module.exports = connectDB;
+module.exports ={connectLocalDB, connectDB};

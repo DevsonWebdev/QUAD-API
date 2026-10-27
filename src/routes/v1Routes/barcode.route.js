@@ -1,5 +1,5 @@
 const express = require("express");
-const {createbarCode}=require("../controllers/barcode.controller")
+const {createbarCode}=require("../../controllers/v1Controllers/barcode.controller")
 
 const barCode = express.Router();
 

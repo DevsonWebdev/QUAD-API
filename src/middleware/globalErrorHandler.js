@@ -39,7 +39,7 @@ function handleMulterErrors(error, res) {
 
 async function handleGlobalErrors(error, req, res, next) {
 
-  if (process.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === "development") {
    return sendDevErr(error, res)
   } else {
     if (error instanceof MulterError) {

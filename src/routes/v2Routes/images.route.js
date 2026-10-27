@@ -1,11 +1,11 @@
 const express = require("express");
-const { isSingleImage } = require("../middleware/multer");
+const { isSingleImage } = require("../../middleware/multer");
 const {
   httpConvertImage,
   httpEnhanceImage,
   httpResizeImage
-} = require("../controllers/images.controller")
-const {isImageFile}=require("../middleware/fileMiddleware")
+} = require("../../controllers/v2Controllers/images.controller")
+const {isImageFile}=require("../../middleware/fileMiddleware")
 const imagesRouter = express.Router();
 
 imagesRouter.post("/convert",[isSingleImage,isImageFile],httpConvertImage);

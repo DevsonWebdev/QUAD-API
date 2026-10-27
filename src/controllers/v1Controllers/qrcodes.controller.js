@@ -1,5 +1,5 @@
-const {sendPng,sendSvg ,scanQrCode}=require("../utils/qrCode.utils")
-const catchAsync = require("../utils/catchAsync")
+const {sendPng,sendSvg ,scanQrCode}=require("../../utils/qrCode.utils")
+const catchAsync = require("../../utils/catchAsync")
 
 const createQrCode=catchAsync(async function(req,res) {
     const { format } = req.query;
