@@ -17,16 +17,17 @@ function sendProdErr(err,res) {
 function sendDevErr(err, res) {
  return res.status(err.statusCode).json({
       status: err.status,
-      error: err,
       message: err.message,
+      error: err,
       stack: err.stack
     });
 }
 
 const handleJwtError = () => new AppError(401, "Invalid token.Please log in again.");
 const handleJwtExpiredError = () => new AppError(401, "Your token has expired.Please log in again.");
-const handleCastError = () => new AppError();
-
+const handleCastError = (err) => new AppError();
+const handleDuplicationError=(err)=>new AppError(403,"User already exists log in to continue.")
+const handleValidationError = (err) => new AppError();
 
 function handleMulterErrors(error, res) {
   const { statusCode } = error;
@@ -46,25 +47,39 @@ async function handleGlobalErrors(error, req, res, next) {
   error.status = error.status || 'error';
 
   if (process.env.NODE_ENV === "development") {
-   return sendDevErr(error, res)
-  }else if (process.env.NODE_ENV === "production") {
 
-    if (error instanceof MulterError) {
-      return handleMulterErrors(error, res)
+    console.info("DEVELOPMENT ENVIRONMENT",process.env.NODE_ENV)
+  return sendDevErr(error, res)
+  }else if (process.env.NODE_ENV === "production") {
+    console.info("PRODUCTION ENVIRONMENT",process.env.NODE_ENV)
+
+    if (error instanceof MulterError){
+      return handleMulterErrors(error)
     }
 
-    if (error.name === "TokenExpiredError")
-    {return error= handleJwtExpiredError() };
+    if (error.name === "TokenExpiredError"){
+        return error = handleJwtExpiredError(error)
+      };
 
-    if (error.name === "JsonWebTokenError")
-    { return error= handleJwtError() };
+      if (error.name === "JsonWebTokenError") {
+        return error = handleJwtError(error)
+      };
 
-    //     if(error.name==="ValidationError")
-        // if(errr.code===11000handle duplicate error
-    //if(error.name==="CastError")
-    console.log(error)
+      if (error.name === "ValidationError") {
+      return error= handleValidationError(error)
+      }
+
+      if (errr.code === 11000) {
+        // handle duplicate error
+        return error=handleDuplicationError(error)
+      }
+
+      if (error.name === "CastError") {
+      return error= handleCastError(error)
+    }
     return   sendProdErr(error, res)
   }
+
 }
 
 module.exports=handleGlobalErrors

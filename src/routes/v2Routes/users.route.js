@@ -7,13 +7,13 @@ const {
   signUp,
   login
 } = require("../../controllers/v2Controllers/users.controller")
-const {isAdmin,protectRoute}=require("../../services/auth")
+const {isAllowedTo,protectRoute}=require("../../services/auth")
 
 usersRouter.post("/signup", signUp);
 usersRouter.post("/login",login)
 
-usersRouter.post("/", createUser);
-usersRouter.delete("/:userId",[protectRoute,isAdmin],deleteUser);
-usersRouter.patch("/:userId",[protectRoute],updateUser)
+usersRouter.post("/",[protectRoute,isAllowedTo("admin")], createUser);
+usersRouter.delete("/:userId",[protectRoute,isAllowedTo("admin")],deleteUser);
+usersRouter.patch("/:userId",protectRoute,updateUser)
 
 module.exports = usersRouter;

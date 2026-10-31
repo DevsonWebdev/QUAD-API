@@ -67,11 +67,11 @@ const protectRoute = catchAsync(async function (req, res, next) {
   next()
 })
 
-const isAdmin = catchAsync(async function (req, res, next) {
-  if(!req.user.role==="admin")return next(new AppError(401,"Action denied, you are not authorised to perform this action"))
+const isAllowedTo =(...roles)=> catchAsync(async function (req, res, next) {
+  if(!roles.includes(req.user.role))return next(new AppError(401,"Action denied, you are not authorised to perform this action"))
   next()
 });
 
 module.exports = {
-  signUp,login,protectRoute,isAdmin
+  signUp,login,protectRoute,isAllowedTo
 }
