@@ -5,9 +5,9 @@ const barCodeRouter=require("./barcode.route")
 const imagesRouter = require("./images.route")
 const usersRouter=require("./users.route")
 const v1Router = express.Router();
-
-v1Router.use("/qrcodes", qrcodesRoute);
-v1Router.use("/barcodes", barCodeRouter);
-v1Router.use("/images", imagesRouter);
+const { protectRoute}=require("../../services/auth")
+v1Router.use("/qrcodes",protectRoute, qrcodesRoute);
+v1Router.use("/barcodes",protectRoute, barCodeRouter);
+v1Router.use("/images", protectRoute,imagesRouter);
 v1Router.use("/users", usersRouter);
 module.exports = v1Router;

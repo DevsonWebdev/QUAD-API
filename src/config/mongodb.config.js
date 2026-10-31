@@ -1,12 +1,8 @@
 const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
-// MONGDB MEMORY SERVER LOCAL
+// MONGDB SERVER LOCAL
 const connectLocalDB = async () => {
   try {
-    // Spawns a temporary, high-performance in-memory MongoDB instance locally
-    const mongod = await MongoMemoryServer.create();
-    const uri = mongod.getUri();
-
+      const uri = "mongodb://localhost:27017/";
     await mongoose.connect(uri);
     console.info(`Local Memory MongoDB Connected: ${uri}`);
   } catch (error) {
@@ -20,9 +16,7 @@ const connectDB = async () => {
     // Mongoose strictQuery setting for future-proofing queries
     mongoose.set('strictQuery', true);
 
-    const connectionURI = process.env.NODE_ENV === "development" ?
-      process.env.MONGO_LEGACY_URI
-      : process.env.MONGO_URI;
+    const connectionURI =process.env.MONGO_URI;
 
     const conn = await mongoose.connect(connectionURI, {
       // Note: useNewUrlParser and useUnifiedTopology are deprecated in newer Mongoose versions
