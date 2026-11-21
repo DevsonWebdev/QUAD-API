@@ -36,8 +36,18 @@ async function resizeImage(res, fileBuffer, dimensions) {
   const resizedImage = sharp(fileBuffer).resize(width,height);
 return  await pipeline(resizedImage,res)
 }
+async function resizeProfilePhoto(req,res) {
+  req.file.filename = `user-${req.user._id}-${Date.now()}.jpeg`;
+await sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat("jpeg")
+    .jpeg({ quality: 70 })
+    .toFile(require("path").join("..","..","Public","imgs","users",req.file.filename) )
+      return  req.file.filename
+}
 module.exports = {
   convertImg,
   enhanceImage,
-  resizeImage
+  resizeImage,
+  resizeProfilePhoto
 }

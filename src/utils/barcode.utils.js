@@ -17,28 +17,26 @@ async function sendBarcodeSvg(res, dataToDecode, barcodeFormat,symbology) {
   res.set({
     "Content-Type": barcodeFormat,
     "Cache-Control": "public, max-age=86400, immutable",
-    "Content-Disposition": `inline, filename="barcode-quad-${Date.now()}.svg"`,
+    "Content-Disposition": `attachment, filename='barcode-quad-${Date.now()}.svg'`,
     'x-no-compression': 'true',
     'Connection': 'keep-alive'
   })
 
   const svgBuffer = await bwipjs.toSVG(bwipjsOpts(symbology,dataToDecode))
- return res.status(200).end(svgBuffer)
+ return res.status(201).end(svgBuffer)
 }
 // Create Png barCode
 async function sendPngBarCode(res, dataToDecode, barcodeFormat, symbology = 'code128') {
-
    res.set({
      "Content-Type": barcodeFormat,
      "Cache-Control": "public, max-age=86400, immutable",
-     "Content-Disposition": `inline, filename="barcode-quad-${Date.now()}.png"`,
+     "Content-Disposition": `attachment, filename='barcode-quad-${Date.now()}.png'`,
      'x-no-compression': 'true',
      'Connection': 'keep-alive'
    })
-
    const pngBufferBts = await bwipjs.toBuffer(bwipjsOpts(symbology,dataToDecode));
-  return res.status(200).end(pngBufferBts)
-}
+  return res.status(201).end(pngBufferBts)
+};
 
 module.exports = {
   sendPngBarCode,

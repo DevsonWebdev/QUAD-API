@@ -4,12 +4,12 @@ const {connectLocalDB, connectDB}=require("./config/mongodb.config")
 const server = http.createServer(app);
 const dotenv = require("dotenv")
 dotenv.config();
-
 async function startServer() {
   try {
-    process.env.NODE_ENV === "development"
-      ? await connectLocalDB() :
-      await connectDB();
+    // process.env.NODE_ENV === "development"
+    //   ? await connectLocalDB() :
+    //   await connectDB();
+await connectLocalDB()
     server.listen(process.env.PORT||5000, () =>
       console.log("💻💻💻 server running 🏃‍♂️🏃‍♂️🏃‍♂️ on port 5000... ✔✔✔"),
     );

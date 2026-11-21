@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
-// MONGDB SERVER LOCAL
+// MONGDB  LOCAL SERVER
 const connectLocalDB = async () => {
   try {
       const uri = "mongodb://localhost:27017/";
     await mongoose.connect(uri);
-    console.info(`Local Memory MongoDB Connected: ${uri}`);
+    console.info(`MongoDB Connected locally`);
   } catch (error) {
-    console.error(`Error connecting to local DB: ${error.message}`);
+    console.error(`Error connecting to DB locally: ${error.message}`);
     process.exit(1);
   }
 };
@@ -15,13 +15,8 @@ const connectDB = async () => {
   try {
     // Mongoose strictQuery setting for future-proofing queries
     mongoose.set('strictQuery', true);
-
     const connectionURI =process.env.MONGO_URI;
-
-    const conn = await mongoose.connect(connectionURI, {
-      // Note: useNewUrlParser and useUnifiedTopology are deprecated in newer Mongoose versions
-      // as they are now enabled by default, but keeping options clean is key.
-    });
+    const conn = await mongoose.connect(connectionURI, {});
 
     console.info(`MongoDB Connected: ${conn.connection.host}`);
 
